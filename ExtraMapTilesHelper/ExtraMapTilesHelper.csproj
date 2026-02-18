@@ -8,4 +8,12 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Pfim" Version="0.11.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ExtraMapTilesHelper\CodeWalker.Core\CodeWalker.Core.csproj" />
+  </ItemGroup>
+
 </Project>

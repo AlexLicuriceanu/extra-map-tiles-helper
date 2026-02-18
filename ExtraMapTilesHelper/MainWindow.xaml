@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExtraMapTilesHelper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="900" Width="1600">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <StackPanel Grid.Column="0" Background="#2D2D2D">
+            <Label Content="Map Tools" Foreground="White" FontWeight="Bold" Margin="10"/>
+            <Button x:Name="BtnLoadYtd" Content="Load YTD File" Margin="10" Padding="10" Click="BtnLoadYtd_Click"/>
+            <TextBlock x:Name="StatusText" Foreground="#AAAAAA" Margin="10" TextWrapping="Wrap" Text="Ready."/>
+        </StackPanel>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Background="#1E1E1E">
+            <WrapPanel x:Name="TextureGallery" ItemWidth="160" ItemHeight="200" Margin="10"/>
+        </ScrollViewer>
     </Grid>
 </Window>
