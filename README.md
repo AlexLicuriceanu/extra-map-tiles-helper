@@ -1,2 +1,2 @@
-# extra-map-tiles-helper
+# Extra Map Tiles Helper Tool
 
