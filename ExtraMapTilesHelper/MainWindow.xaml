@@ -154,7 +154,7 @@
                         
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=IsActive}" Value="True">
-                                <Setter Property="Foreground" Value="#9184ee"/>
+                                <Setter Property="Foreground" Value="#999999"/>
                                 <Setter Property="FontWeight" Value="Bold"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -195,7 +195,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Label Content="Solution Explorer" Foreground="#F1F1F1" Background="#2D2D30" Padding="10,6" FontWeight="SemiBold"/>
+                <Label Content="Texture Dictionaries" Foreground="#F1F1F1" Background="#2D2D30" Padding="10,6" FontWeight="SemiBold"/>
 
                 <TreeView x:Name="AssetTree" Grid.Row="1" Background="Transparent" BorderThickness="0" Margin="0,5,0,0">
                     <TreeView.Resources>
@@ -219,7 +219,7 @@
 
                 <Border BorderBrush="Red" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                    <Grid x:Name="MapGrid" Width="150" Height="150">
+                    <Grid x:Name="MapGrid" Width="400" Height="350">
                         <Grid.LayoutTransform>
                             <ScaleTransform x:Name="MapScale" ScaleX="1" ScaleY="1"/>
                         </Grid.LayoutTransform>

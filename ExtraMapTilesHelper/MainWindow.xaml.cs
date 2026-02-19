@@ -341,6 +341,32 @@ namespace ExtraMapTilesHelper
             // 3. Scroll to that position
             MapScrollViewer.ScrollToHorizontalOffset(centerX);
             MapScrollViewer.ScrollToVerticalOffset(centerY);
+
+            AddBluePoint(50, 50);
+        }
+
+        private void AddBluePoint(double x, double y)
+        {
+            // 1. Create the shape (A blue dot)
+            System.Windows.Shapes.Ellipse point = new System.Windows.Shapes.Ellipse
+            {
+                Width = 10,        // Size of the dot
+                Height = 10,
+                Fill = Brushes.Blue,       // Color
+                Stroke = Brushes.White,    // White border (optional, helps visibility)
+                StrokeThickness = 1
+            };
+
+            // 2. Position it on the Canvas
+            // We subtract half the size (5px) so the CENTER of the dot is at X,Y
+            Canvas.SetLeft(point, x - (point.Width / 2));
+            Canvas.SetTop(point, y - (point.Height / 2));
+
+            // 3. Ensure it stays on top of map tiles
+            Panel.SetZIndex(point, 999);
+
+            // 4. Add it to the visual tree
+            MapCanvas.Children.Add(point);
         }
     }
 }
