@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Extra Map Tiles Helper</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Editor Setup</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: "Segoe UI", system-ui, sans-serif;
+            font-family: sans-serif;
             background: #1e1e2e;
             color: #cdd6f4;
             display: flex;
@@ -20,71 +14,83 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            gap: 1.5rem;
+            margin: 0;
         }
-
-        h1 {
-            font-size: 1.6rem;
-            font-weight: 600;
-        }
-
-        #status {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            background: #313244;
-            font-size: 0.95rem;
-            min-width: 300px;
-            text-align: center;
-        }
-
-            #status.success {
-                border-left: 4px solid #a6e3a1;
-            }
-
-            #status.error {
-                border-left: 4px solid #f38ba8;
-            }
 
         button {
-            padding: 0.6rem 1.4rem;
-            border: none;
-            border-radius: 6px;
-            background: #89b4fa;
-            color: #1e1e2e;
-            font-size: 0.95rem;
-            font-weight: 600;
+            padding: 10px 20px;
+            font-size: 16px;
             cursor: pointer;
+            background: #89b4fa;
+            border: none;
+            border-radius: 5px;
+            color: #1e1e2e;
+            font-weight: bold;
         }
 
-            button:hover {
-                background: #74c7ec;
-            }
+        #log {
+            margin-top: 20px;
+            font-family: monospace;
+            color: #a6e3a1;
+        }
     </style>
 </head>
 <body>
-    <h1>Extra Map Tiles Helper</h1>
-    <div id="status">Waiting for ping...</div>
-    <button id="pingBtn">Ping Backend</button>
+    <div style="padding: 20px;">
+        <h1>Map Tile Editor</h1>
+        <button id="importBtn">Import .ytd File</button>
+        <p id="status">Waiting for file...</p>
 
-    <script src="js/bridge.js"></script>
+        <div id="textureGallery" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;"></div>
+    </div>
+
+    <script src="bridge.js"></script>
     <script>
         const statusEl = document.getElementById("status");
-        const pingBtn = document.getElementById("pingBtn");
+        const galleryEl = document.getElementById("textureGallery");
 
-        Bridge.on("pong", (payload) => {
-        statusEl.textContent = payload.message;
-        statusEl.className = "success";
+        // 1. Tell C# to open the file picker
+        document.getElementById("importBtn").addEventListener("click", () => {
+        statusEl.innerText = "Opening file picker...";
+        Bridge.send("open_file_dialog");
+        });
+
+        // 2. Listen for the extracted data from C#
+        Bridge.on("ytd_loaded", (payload) => {
+        statusEl.innerText = `Loaded dictionary: ${payload.dictionaryName} (${payload.textures.length} textures)`;
+
+        // Clear the gallery
+        galleryEl.innerHTML = "";
+
+        // Render each texture
+        payload.textures.forEach(tex => {
+        const imgContainer = document.createElement("div");
+        imgContainer.style.background = "#313244";
+        imgContainer.style.padding = "10px";
+        imgContainer.style.borderRadius = "8px";
+
+        const img = document.createElement("img");
+        img.src = tex.preview;
+        img.style.width = "128px";
+        img.style.height = "128px";
+        img.style.objectFit = "contain";
+        img.style.display = "block";
+
+        const label = document.createElement("small");
+        label.innerText = tex.name;
+        label.style.display = "block";
+        label.style.marginTop = "5px";
+        label.style.textAlign = "center";
+
+        imgContainer.appendChild(img);
+        imgContainer.appendChild(label);
+        galleryEl.appendChild(imgContainer);
+        });
         });
 
         Bridge.on("error", (payload) => {
-        statusEl.textContent = `Error: ${payload.message}`;
-        statusEl.className = "error";
-        });
-
-        pingBtn.addEventListener("click", () => {
-        statusEl.textContent = "Pinging…";
-        statusEl.className = "";
-        Bridge.send("ping");
+        statusEl.innerText = `Error: ${payload.message}`;
+        statusEl.style.color = "#f38ba8";
         });
     </script>
 </body>

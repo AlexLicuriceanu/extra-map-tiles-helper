@@ -1,41 +1,37 @@
-﻿using System;
-using System.IO;
-using ExtraMapTilesHelper.Backend;
+﻿using ExtraMapTilesHelper.backend;
 using Photino.NET;
+using System;
+using System.IO;
 
 namespace ExtraMapTilesHelper;
 
 class Program
 {
-    // THIS IS THE MAGIC LINE. It allows WebView2 to render.
-    [STAThread]
+    [STAThread] // Required for Windows UI to render
     static void Main(string[] args)
     {
         var wwwroot = Path.Combine(AppContext.BaseDirectory, "wwwroot");
         var indexPath = Path.Combine(wwwroot, "index.html");
 
-        // 1. Defensive check: Let's make sure the csproj actually copied your files
         if (!File.Exists(indexPath))
         {
-            // If you see this in your console, your csproj isn't copying the wwwroot folder properly.
             Console.WriteLine($"CRITICAL ERROR: Could not find UI file at {indexPath}");
-            Console.ReadLine(); // Pause so you can read the error
+            Console.ReadLine();
             return;
         }
 
         var window = new PhotinoWindow()
-            .SetTitle("Extra Map Tiles Helper")
-            .SetSize(1280, 800)
+            .SetTitle("Map Tile Editor")
+            .SetSize(1024, 768)
             .Center()
             .SetLogVerbosity(0);
 
         var router = new MessageRouter(window);
 
+        // Tell Photino to send all JS messages to our router
         window.RegisterWebMessageReceivedHandler(router.HandleMessage);
 
-        // 2. Wrap the path in a Uri. This prevents WebView2 from getting confused by raw Windows paths (C:\...)
         window.Load(new Uri(indexPath));
-
         window.WaitForClose();
     }
 }

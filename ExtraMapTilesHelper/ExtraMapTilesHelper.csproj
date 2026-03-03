@@ -20,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Pfim" Version="0.11.4" />
     <PackageReference Include="Photino.NET" Version="4.0.16" />
+    <PackageReference Include="SkiaSharp" Version="3.119.2" />
   </ItemGroup>
 
 </Project>
